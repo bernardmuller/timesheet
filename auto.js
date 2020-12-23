@@ -1,5 +1,5 @@
 const fs = require('fs');
-// import ExcelJS from 'exceljs';
+const ExcelJS = require('exceljs');
 // import {months} from 'months';
 
 const months = {
@@ -19,16 +19,44 @@ const months = {
 
 const date = new Date();
 const day = date.toISOString().slice(8,10);
-const month = date.toISOString().slice(5,7);
+const month = months[date.toISOString().slice(5,7)];
 const year = date.toISOString().slice(0,4);
 const progDir = process.cwd();
-const tempDir = prog_dir + '/templates/template.xlsx';
+// const tempPath = progDir + '/templates/template.xlsx';
 const bookName = year + '_timebook.xslx';
-const bookPath = prog_dir + '/timesheets/' + bookName;
+const bookPath = progDir + '/timesheets/' + bookName;
+const weekNum = Math.floor((day - 1) / 7 + 1);
 
 
-class TimebookSetup {
-    constructor () {
-        
+class Setup {
+    constructor (year ,bookPath, bookName, tempPath) {
+        // this.year = year;
+        // this.bookPath = bookPath;
+        // this.bookName = bookName;
+        // this.tempPath = tempPath;
+    }
+
+    checkDirs(bookPath) {
+        if (!fs.existsSync(bookPath)) {
+            console.log('Timebook does not exist');
+            this.createBook();
+        }      
+    }
+
+    moveToTimesheets() {
+        fs.rename(progDir + `/${bookName}`, bookPath, function(err){
+            if (err) throw err
+            console.log(`Book saved to ${bookPath}`)
+        })
+    }
+
+    async createBook() {
+        const timebook = new ExcelJS.Workbook();
+        const template = timebook.addWorksheet('TEMPLATE');
+        await timebook.xlsx.writeFile(bookName);     
+        this.moveToTimesheets();
     }
 }
+
+let timebook = new Setup();
+timebook.checkDirs()
