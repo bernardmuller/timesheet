@@ -42,20 +42,12 @@ class Setup {
             console.log('Timebook does not exist');
             this.createBook();
             this.getActiveSheet();
-            // this.getCredentials();
+            this.getCredentials();
         }       
     }    
 
-    moveToTimesheets() {
-        fs.rename(progDir + `/${bookName}`, bookPath, function(err){
-            if (err) throw err
-            console.log(`Book saved to ${bookPath}`)
-        })
-    }
-
     async createBook() {       
         this.saveFile();
-        this.moveToTimesheets();
     }
 
     async getActiveSheet() {
@@ -68,12 +60,14 @@ class Setup {
     }
 
     async saveFile() {
-        await timebook.xlsx.writeFile(bookName); 
+        await timebook.xlsx.writeFile(bookPath); 
     }
 
     getCredentials() {
         let userName = prompt('What is your name?');
         console.log(`Hello, ${userName}!`)
+        let activeSheet = timebook.getWorksheet(`${month}`);
+        activeSheet.getCell('A1').value = userName;
     }
 }
 
@@ -85,7 +79,7 @@ class Styler {
     }
     
     sizeColumns() {
-        let activeSheet = timebook.getWorksheet(`${month}`)
+        const activeSheet = timebook.getWorksheet(`${month}`)
         activeSheet.getColumn('A').width = 17;
         activeSheet.getColumn('B').width = 48;
         activeSheet.getColumn('C').width = 17;
