@@ -1,26 +1,26 @@
 {
   "name": "timesheet",
   "version": "1.0.0",
-  "description": "Automate excel timesheets",
-  "main": "auto.js",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "ejs": "^3.1.5",
+    "express": "^4.17.1"
+  },
+  "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "serve": "nodemon index.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Grizzlyui/timesheet.git"
   },
-  "author": "grizzly",
+  "keywords": [],
+  "author": "",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/Grizzlyui/timesheet/issues"
   },
-  "homepage": "https://github.com/Grizzlyui/timesheet#readme",
-  "dependencies": {
-    "exceljs": "^4.2.0",
-    "figlet": "^1.5.0",
-    "fs": "0.0.1-security",
-    "prompt-sync": "^4.2.0",
-    "xlsx": "^0.16.9"
-  }
+  "homepage": "https://github.com/Grizzlyui/timesheet#readme"
 }
