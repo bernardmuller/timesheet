@@ -1,5 +1,16 @@
-<%- include("../partials/head.ejs") %>
+<% layout('layouts/boilerplate') %>
+<body>
+    
+    <h1>All Submissions</h1>
+    <ul>
+        <% for(let submission in submissions) { %>
+            <div>
+                <li> Day: <%= submission.date%> </li>
+                <li> <%=submission.description%> </li>
+            </div>
+        <% } %>
+    </ul>
 
-Timesheet...
+    <a href="/submissions/new">New Submission</a>
+</body>
 
-<%- include("../partials/footer.ejs") %>
