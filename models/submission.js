@@ -7,7 +7,13 @@ const submissionSchema = new Schema({
     description: {
         type: String,        
     },
-    project: String        
+    project: String,
+    timesheet: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'Timesheet'
+        }
+    ]     
 })
 
 module.exports = mongoose.model("Submission", submissionSchema);

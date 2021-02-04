@@ -53,8 +53,8 @@ app.use(express.static('public'));
 
 
 // Submission Routes
-app.get('/submissions', async (req, res) => {
-    const submissions = await Submission.find({});
+app.get('timesheets/:id/submissions', async (req, res) => {
+    const submissions = await Submission.findbyId(req.body.params);
     res.render('submissions/index', { submissions });
 })
 
@@ -69,9 +69,18 @@ app.get('/submissions/:id', async (req, res) =>{
 })
 
 app.post('/submissions', async (req, res) => {
+    // add middleware
+    const date = new Date();
+    const currentYear = date.toISOString().slice(0,4);
+    const currentMonth = months[date.toISOString().slice(6,7)];   
+    const currentDate =  currentMonth + " " + currentYear; 
+
     const newSubmission = new Submission(req.body.submission);
+    const timesheet = await Timesheet.findbyId({month: currentDate})
+    timesheet.submissions.push(newSubmission)
+    await timesheet.save();
     await newSubmission.save();
-    res.redirect('/submissions')
+    res.redirect('/timesheets')
 })
 
 app.get('/submissions/:id/edit', async (req, res) => {
@@ -103,24 +112,31 @@ app.get('/timesheets', async (req, res) => {
 app.get('/timesheets/:id', async (req, res) => {
     const { id } = req.params;
     const timesheet = await Timesheet.findById(id);
-    res.render('timesheets/new', { timesheet }) 
+    res.render('timesheets/show', { timesheet }) 
 })
 
-app.post('/timesheets', async (req, res) => {
-    const { id } = req.params;
-    const timesheet = await Timesheet.findById(id);
+app.post('/timesheets', async (req, res) => {      
     const date = new Date();
     const currentYear = date.toISOString().slice(0,4);
     const currentMonth = months[date.toISOString().slice(6,7)];   
-    const currentDate =  currentMonth + currentYear;
-    if(!timesheet.month === currentDate) {
-        const timesheet = new Timesheet({
-            month: currentDate
-        });
-        timesheet.save();
-    } else {
-        console.log('date already exists')
-    }
+    const currentDate =  currentMonth + " " + currentYear;         
+    
+    Timesheet.find({month: currentDate}, function(err, docs){
+        if (docs.length){
+            console.log('timesheet already exists')
+        } else {
+            const timesheet = new Timesheet({
+                month: currentDate
+            });
+            timesheet.save();
+        }
+    })  
+    res.redirect('/timesheets')
+})
+
+app.delete('/timesheets/:id', async(req, res) =>{
+    const { id } = req.params;
+    await Timesheet.findByIdAndDelete(id);
     res.redirect('/timesheets')
 })
 
@@ -128,3 +144,4 @@ app.listen(3000, () => {
     console.log('listening on port 3000');
 })
 
+////////rewriting submission routes
