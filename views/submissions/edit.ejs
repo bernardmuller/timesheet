@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Submission</title>
+</head>
+<body>
+    <div>
+        <h1>Edit Submission</h1>
+        <div>          
+                
+            <form action="/submissions/<%=submission._id%>?_method=PUT" method="POST" novalidate class="validated-form">
+                <div>
+                    <label for="description">Description</label>
+                    <input type="text" name="submission[description]" id="description" value="<%=submission.description%>" required>
+                    <label for="project">Project: </label>
+                    <input type="text" name="submission[project]" id="project" value="<%=submission.project%>" required>
+                </div>  
+                <div class="mb-3">
+                    <button class="btn btn-success">Accept</button>
+                </div>  
+            </form>                    
+        
+            <a href="/submissions">Back to Submissions</a>
+    </div>
+</body>
+
+</html>
+
+

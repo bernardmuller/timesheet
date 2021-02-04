@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Submission</title>
+</head>
+<body>
+    <div>
+        <h1>New Submission</h1>
+        <div>
+            <form action="/submissions" method="POST" novalidate class="validated-form">
+                <div class="mb-3">
+                    <label for="description" class="form-label">Description</label>
+                    <input class="form-control" type="text" name="submission[description]" id="description" required>
+                    <!-- <div class="valid-feedback">
+                        Looks Good!
+                    </div> -->
+                </div>
+                <div>
+                    <label class="project" for="location">Project</label>
+                    <input class="form-control" type="text" name="submission[project]" id="project" required>
+                </div>                
+                <div class="mb-3">
+                    <button class="btn btn-success">Submit</button>
+                </div>            
+            </form>
+            <a href="/submissions">Back to Submissions</a>
+    </div>
+</body>
+
+</html>
+

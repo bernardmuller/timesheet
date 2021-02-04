@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Timesheets</title>
+</head>
+<body>
+    
+    <h1>All Timesheets</h1>    
+        <% for(let timesheet of timesheets) { %>
+            <div>
+                <p><a href="/timesheet/<%=timesheet._id%>"><%=timesheet.month%></a></p>
+            </div>
+        <% } %>
+    
+    <form action="/timesheets" method="POST">
+        <button>New Timesheet</button>
+    </form>
+    
+    
+</body>
+</html>

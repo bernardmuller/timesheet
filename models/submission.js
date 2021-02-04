@@ -2,13 +2,12 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const submissionSchema = new Schema({
-    date: String, // Needs automation - day
+    day: String, // Needs automation - day
+    month: String,
     description: {
         type: String,        
     },
-    project: {
-        enum: ['RHV', 'CBS', 'AMA'],
-        }
+    project: String        
 })
 
 module.exports = mongoose.model("Submission", submissionSchema);
