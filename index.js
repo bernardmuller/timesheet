@@ -60,8 +60,10 @@ app.get('timesheets/:id/submissions', async (req, res) => {
     res.render('submissions/index', { submissions });
 })
 
-app.get('/timesheets/:id/submissions/new', (req, res) => {
-    res.render('submissions/new')
+app.get('/timesheets/:id/submissions/new', async (req, res) => {
+    const { id } = req.params;    
+    const timesheet = await Timesheet.findById(id);
+    res.render('submissions/new', { timesheet })
 })
 
 app.get('/timesheets/:id/submissions/:subID', async (req, res) =>{
@@ -78,11 +80,11 @@ app.post('/timesheets/:id/submissions', async (req, res) => {
     const currentDate =  currentMonth + " " + currentYear; 
 
     const newSubmission = new Submission(req.body.submission);
-    const timesheet = await Timesheet.findbyId({month: currentDate})
+    const timesheet = await Timesheet.findById(req.params.id);
     timesheet.submissions.push(newSubmission)
     await timesheet.save();
     await newSubmission.save();
-    res.redirect('/timesheets')
+    res.redirect(`/timesheets/${timesheet._id}`)
 })
 
 app.get('/timesheets/:id/submissions/:subID/edit', async (req, res) => {
