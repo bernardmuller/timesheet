@@ -52,23 +52,25 @@ app.use(methodOverride('_method'));
 app.use(express.static('public'));
 
 
+
+////////////////////////////////////////////////////////////////////////////
 // Submission Routes
 app.get('timesheets/:id/submissions', async (req, res) => {
     const submissions = await Submission.findbyId(req.body.params);
     res.render('submissions/index', { submissions });
 })
 
-app.get('/submissions/new', (req, res) => {
+app.get('/timesheets/:id/submissions/new', (req, res) => {
     res.render('submissions/new')
 })
 
-app.get('/submissions/:id', async (req, res) =>{
+app.get('/timesheets/:id/submissions/:subID', async (req, res) =>{
     const { id } = req.params;
     const submission = await Submission.findById(id);
     res.render('submissions/show', { submission })
 })
 
-app.post('/submissions', async (req, res) => {
+app.post('/timesheets/:id/submissions', async (req, res) => {
     // add middleware
     const date = new Date();
     const currentYear = date.toISOString().slice(0,4);
@@ -83,20 +85,20 @@ app.post('/submissions', async (req, res) => {
     res.redirect('/timesheets')
 })
 
-app.get('/submissions/:id/edit', async (req, res) => {
+app.get('/timesheets/:id/submissions/:subID/edit', async (req, res) => {
     const { id } = req.params;
     const submission = await Submission.findById(id);
     res.render('submissions/edit', { submission })
 })
 
 
-app.put('/submissions/:id', async (req, res) => {
+app.put('/timesheets/:id/submissions/:subID', async (req, res) => {
     const { id } = req.params;
     const submission = await Submission.findByIdAndUpdate(id, {...req.body.submission}, {runValidators: true, new: true, useFindAndModify:false});    
     res.redirect(`/submissions/${submission._id}`)
 })
 
-app.delete('/submissions/:id', async(req, res) =>{
+app.delete('/timesheets/:id/submissions/:subID', async(req, res) =>{
     const { id } = req.params;
     await Submission.findByIdAndDelete(id);
     res.redirect('/submissions')
@@ -110,10 +112,17 @@ app.get('/timesheets', async (req, res) => {
 })
 
 app.get('/timesheets/:id', async (req, res) => {
-    const { id } = req.params;
-    const timesheet = await Timesheet.findById(id);
+    const { id } = req.params;    
+    const timesheet = await Timesheet.findById(id).populate('submissions');
     res.render('timesheets/show', { timesheet }) 
 })
+
+app.get('/timesheets/:id/submissions', async (req, res) => {
+    const { id } = req.params;
+    const timesheet = await Timesheet.findById(id).populate('submissions');
+    res.render('timesheets/show', { timesheet }) 
+})
+
 
 app.post('/timesheets', async (req, res) => {      
     const date = new Date();

@@ -11,11 +11,14 @@
     
     <h1><%=timesheet.month%></h1>
 
-    <h2>Put submissions here</h2>    
+    <% for(let submission of timesheet.submissions) { %>
+        <h2>Description: <%=submission.description%></h2>
+    <% } %>
+    
     <form action="/timesheets/<%=timesheet._id%>?_method=DELETE" method="POST" novalidate class="validated-form">
         <button>Delete</button>
     </form>
-    <a href="/submissions/new">New Submission</a>
+    <a href="/timesheets/<%=timesheet._id%>/submissions/new">New Submission</a>
     <a href="/timesheets">Back to Timesheets</a>
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js" integrity="sha384-q2kxQ16AaE6UbzuKqyBE9/u/KzioAlnx2maXQHiDX9d4/zp8Ok3f+M7DPm+Ib6IU" crossorigin="anonymous"></script>

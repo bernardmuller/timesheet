@@ -9,7 +9,7 @@
     <div>
         <h1>New Submission</h1>
         <div>
-            <form action="/submissions" method="POST" novalidate class="validated-form">
+            <form action="/timesheets/<%=timesheet._id%>/submissions" method="POST" novalidate class="validated-form">
                 <div class="mb-3">
                     <label for="description" class="form-label">Description</label>
                     <input class="form-control" type="text" name="submission[description]" id="description" required>
