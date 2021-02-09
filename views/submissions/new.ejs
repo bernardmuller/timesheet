@@ -1,16 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>New Submission</title>
-</head>
+<% layout('layouts/boilerplate') %>
 <body>
     <div>
         <h1>New Submission</h1>
         <div>
             <form action="/timesheets/<%=timesheet._id%>/submissions" method="POST" novalidate class="validated-form">
                 <div class="mb-3">
+                    <label for="date" class="form-label">Date</label>
+                    <input type="date" class="form-control" name="submission[date]" id="date"required>
                     <label for="description" class="form-label">Description</label>
                     <input class="form-control" type="text" name="submission[description]" id="description" required>
                     <!-- <div class="valid-feedback">
@@ -29,5 +25,5 @@
     </div>
 </body>
 
-</html>
+
 

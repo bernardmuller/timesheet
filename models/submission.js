@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+
+
 const submissionSchema = new Schema({
     day: String, // Needs automation - day
     month: String,
