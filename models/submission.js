@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 
 
 const submissionSchema = new Schema({
-    day: String, // Needs automation - day
+    day: Number, // Needs automation - day
     month: String,
     description: {
         type: String,        

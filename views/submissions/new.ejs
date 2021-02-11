@@ -1,29 +1,36 @@
 <% layout('layouts/boilerplate') %>
-<body>
-    <div>
-        <h1>New Submission</h1>
-        <div>
-            <form action="/timesheets/<%=timesheet._id%>/submissions" method="POST" novalidate class="validated-form">
-                <div class="mb-3">
-                    <label for="date" class="form-label">Date</label>
-                    <input type="date" class="form-control" name="submission[date]" id="date"required>
-                    <label for="description" class="form-label">Description</label>
-                    <input class="form-control" type="text" name="submission[description]" id="description" required>
-                    <!-- <div class="valid-feedback">
-                        Looks Good!
-                    </div> -->
+<div class="row">
+    <h1 class="text-center">New Submission</h1>
+    <div class="col-6 offset-3">
+        <form action="/timesheets/<%=timesheet._id%>/submissions" method="POST" novalidate class="validated-form">
+            <div class="mb-3">
+                <label for="date" class="form-label">Date</label>
+                <input type="date" class="form-control" name="submission[date]" id="date" value="<%=defaultDate%>">
+                <div class="valid-feedback">
+                    Looks Good!
                 </div>
-                <div>
-                    <label class="project" for="location">Project</label>
-                    <input class="form-control" type="text" name="submission[project]" id="project" required>
-                </div>                
-                <div class="mb-3">
-                    <button class="btn btn-success">Submit</button>
-                </div>            
-            </form>
-            <a href="/timesheets/<%=timesheet._id%>">Back to Timesheet</a>
-    </div>
-</body>
+            </div>
+            <div class="mb-3">
+                <label for="description" class="form-label">Description</label>
+                <input class="form-control" type="text" name="submission[description]" id="description" required>
+                <div class="valid-feedback">
+                    Looks Good!
+                </div>
+            </div>
+            <div class="mb-3">
+                <label class="project" for="location">Project</label>
+                <input class="form-control" type="text" name="submission[project]" id="project" required>
+                <div class="valid-feedback">
+                    Looks Good!
+                </div>
+            </div>                
+            <div class="mb-3">
+                <button class="btn btn-success">Submit</button>
+            </div>            
+        </form>
+        <a href="/timesheets/<%=timesheet._id%>">Back to Timesheet</a>
+</div>
+
 
 
 

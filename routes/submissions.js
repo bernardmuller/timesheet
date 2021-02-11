@@ -8,7 +8,9 @@ const Timesheet = require('../models/timesheet');
 // utils
 const months = require('../utils/months');
 const date = require('../utils/date');
-const { connection } = require('mongoose');
+
+const newDate = new Date();
+const defaultDate = newDate.toISOString().slice(0,10);
 
 // app.get('/', async (req, res) => {
 //     const submissions = await Submission.findbyId(req.body.params);
@@ -16,9 +18,10 @@ const { connection } = require('mongoose');
 // })
 
 router.get('/new', async (req, res) => {
+    console.log(defaultDate)
     const { id } = req.params;    
     const timesheet = await Timesheet.findById(id);
-    res.render('submissions/new', { timesheet })
+    res.render('submissions/new', { timesheet, defaultDate })
 })
 
 // app.get('/timesheets/:id/submissions/:subID', async (req, res) =>{
@@ -28,13 +31,12 @@ router.get('/new', async (req, res) => {
 // })
 
 router.post('/', async (req, res) => {
+    console.log(defaultDate)
     const newSubmission = new Submission(req.body.submission);
-    console.log(req.body.submission.date)
     const timesheet = await Timesheet.findById(req.params.id);
     timesheet.submissions.push(newSubmission)
-    const day = req.body.submission.date
-    
-    console.log(day.slice(8,10))
+    const selectedDay = req.body.submission.date.slice(8,10)
+    newSubmission.day = selectedDay;
     await timesheet.save();
     await newSubmission.save();
     res.redirect(`/timesheets/${timesheet._id}`)

@@ -6,7 +6,7 @@ const Timesheet = require('../models/timesheet');
 
 // utils
 const months = require('../utils/months');
-const date = require('../utils/date');
+const sheetDate = require('../utils/date');
 
 router.get('/', async (req, res) => {
     const timesheets = await Timesheet.find({});
@@ -15,7 +15,7 @@ router.get('/', async (req, res) => {
 
 router.get('/:id', async (req, res) => {
     const { id } = req.params;    
-    const timesheet = await Timesheet.findById(id).populate('submissions');
+    const timesheet = await Timesheet.findById(id).populate('submissions').sort({day:-1});
     res.render('timesheets/show', { timesheet }) 
 })
 
@@ -26,13 +26,14 @@ router.get('/:id/submissions', async (req, res) => {
 })
 
 
-router.post('/', async (req, res) => {     
-    Timesheet.find({month: date.currentDate}, function(err, docs){
-        if (docs.length){
+router.post('/', async (req, res) => { 
+    // console.log(sheetDate.date.currentDate)    
+    Timesheet.find({month: sheetDate.date.currentDate}, function(err, docs){
+        if (docs.length){            
             console.log('timesheet already exists')
         } else {
             const timesheet = new Timesheet({
-                month: date.currentDate
+                month: sheetDate.date.currentDate
             });
             timesheet.save();
         }
