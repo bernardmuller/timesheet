@@ -1,7 +1,7 @@
 <% layout('layouts/boilerplate') %>
-<div class="row">
+<div class="row d-flex justify-content-center">
     <h1 class="text-center">New Submission</h1>
-    <div class="col-6 offset-3">
+    <div class="col-10 ">
         <form action="/timesheets/<%=timesheet._id%>/submissions" method="POST" novalidate class="validated-form">
             <div class="mb-3">
                 <label for="date" class="form-label">Date</label>

@@ -1,27 +1,41 @@
 <% layout('layouts/boilerplate') %>
 <body>
-    
-    <h1><%=timesheet.month%></h1>
-    <div class='mb-12'>
-        <% for(let submission of timesheet.submissions) { %>
-            <div class="container">
-                <div class="row">
-                  <div class="col border">
-                    <%=submission.day %>
-                  </div>
-                  <div class="col-6 border">
-                    <%=submission.description%>
-                  </div>
-                  <div class="col border">
-                    <%=submission.project%>
-                  </div>
-                </div>        
-              </div>
-        <% } %>
+    <div class="col-9">
+      <h1><%=timesheet.month%></h1>
+      <div class='mb-12'>
+        <div class="container">
+          <div class="row">
+            <div class="col border">
+              <h4>DATE</h4>
+            </div>
+            <div class="col-6 border">
+              <h4>DESCRIPTION</h4>
+            </div>
+            <div class="col border">
+              <h4>PROJECT</h4>
+            </div>
+          </div>        
+        </div>
+          <% for(let submission of timesheet.submissions) { %>
+              <div class="container">
+                  <div class="row">
+                    <div class="col border">
+                      <%=submission.day %>
+                    </div>
+                    <div class="col-6 border">
+                      <%=submission.description%>
+                    </div>
+                    <div class="col border">
+                      <%=submission.project%>
+                    </div>
+                  </div>        
+                </div>
+          <% } %>
+      </div>
+      <form action="/timesheets/<%=timesheet._id%>/submissions/new" class="mt-3">
+        <button class="btn btn-sm btn-success">New</button>
+      </form>
     </div>
-    <form action="/timesheets/<%=timesheet._id%>/submissions/new" class="mt-3">
-      <button class="btn btn-sm btn-success">New</button>
-    </form>
     <!-- <form action="/timesheets/<%=timesheet._id%>?_method=DELETE" method="POST" novalidate class="validated-form">
         <button class="btn btn-sm btn-danger">Delete Sheet</button>
     </form> -->

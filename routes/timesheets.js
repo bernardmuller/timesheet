@@ -26,8 +26,7 @@ router.get('/:id/submissions', async (req, res) => {
 })
 
 
-router.post('/', async (req, res) => { 
-    // console.log(sheetDate.date.currentDate)    
+router.post('/', async (req, res) => {      
     Timesheet.find({month: sheetDate.date.currentDate}, function(err, docs){
         if (docs.length){            
             console.log('timesheet already exists')

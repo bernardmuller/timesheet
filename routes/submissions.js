@@ -30,8 +30,7 @@ router.get('/new', async (req, res) => {
 //     res.render('submissions/show', { submission })
 // })
 
-router.post('/', async (req, res) => {
-    console.log(defaultDate)
+router.post('/', async (req, res) => {    
     const newSubmission = new Submission(req.body.submission);
     const timesheet = await Timesheet.findById(req.params.id);
     timesheet.submissions.push(newSubmission)
