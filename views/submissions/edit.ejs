@@ -1,31 +1,26 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Submission</title>
-</head>
-<body>
-    <div>
-        <h1>Edit Submission</h1>
-        <div>          
-                
-            <form action="/submissions/<%=submission._id%>?_method=PUT" method="POST" novalidate class="validated-form">
-                <div>
-                    <label for="description">Description</label>
-                    <input type="text" name="submission[description]" id="description" value="<%=submission.description%>" required>
-                    <label for="project">Project: </label>
-                    <input type="text" name="submission[project]" id="project" value="<%=submission.project%>" required>
-                </div>  
-                <div class="mb-3">
-                    <button class="btn btn-success">Accept</button>
-                </div>  
-            </form>                    
-        
-            <a href="/submissions">Back to Submissions</a>
-    </div>
-</body>
-
-</html>
-
+<% layout('layouts/boilerplate') %>
+<div class="row d-flex justify-content-center">
+    <h1 class="text-center">Edit Submission</h1>
+    <div class="col-10 ">
+        <form action="/timesheets/<%=timesheet._id%>/submissions/<%=submission._id%>?_method=PUT" method="POST" novalidate class="validated-form">            
+            <div class="mb-3">
+                <label for="description" class="form-label">Description</label>
+                <input class="form-control" type="text" name="submission[description]" id="description" value="<%=submission.description%>" required>
+                <div class="valid-feedback">
+                    Looks Good!
+                </div>
+            </div>
+            <div class="mb-3">
+                <label class="project" for="location">Project</label>
+                <input class="form-control" type="text" name="submission[project]" id="project" value="<%=submission.project%>" required>
+                <div class="valid-feedback">
+                    Looks Good!
+                </div>
+            </div>                
+            <div class="mb-3">
+                <button class="btn btn-success">Accept</button>
+            </div>            
+        </form>
+        <!-- <a href="/timesheets/<=timesheet._id%>">Back to Timesheet</a> -->
+</div>
 

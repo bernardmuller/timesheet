@@ -5,6 +5,10 @@ const mongoose = require('mongoose');
 const ejsMate = require('ejs-mate');
 const methodOverride = require('method-override');
 
+//utilities
+const ExpressError = require('./utils/expressError');
+const Joi = require('joi');
+
 // Routes //
 const timesheets = require('./routes/timesheets')
 const submissions = require('./routes/submissions')
@@ -42,8 +46,20 @@ app.use(express.static('public'));
 app.use('/timesheets', timesheets);
 app.use('/timesheets/:id/submissions', submissions);
 
+app.all('*', (req, res, next) => {
+    next(new ExpressError('Page Not Found', 404))
+})
+
+
+app.use((err, req, res, next) => {
+    const { statusCode = 500 } = err;
+    if(!err.message) err.message = 'Something went wrong' 
+    res.status(statusCode).render('error', { err });
+
+})
+
 // listener //
-app.listen(3000, () => {
+app.listen(8080, () => {
     console.log('listening on port 3000');
 })
 
