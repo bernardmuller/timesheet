@@ -51,20 +51,21 @@ router.get('/:id/download', catchAsync(async(req, res) => {
         options: {
             sort: {day: 1}
         }})
-    const filePath = path.join(__dirname, '../docs/works.xlsx')
     toExcel.createFile(timesheet)
-    res.render('timesheets/download', { filePath })
+    const filePath = path.join(__dirname, '../docs/works.xlsx')
+    res.render('timesheets/download', {filePath})
 }))
 
 
 router.post('/', catchAsync(async (req, res, next) => {      
-    Timesheet.find({month: sheetDate.date.currentDate}, function(err, docs){
+    Timesheet.find({name: sheetDate.date.currentDate}, function(err, docs){
         if (docs.length){            
             // insert flash message here
             console.log(`Timesheet for ${sheetDate.date.currentDate} already exists.`)
         } else {
             const timesheet = new Timesheet({
-                month: sheetDate.date.currentDate
+                month: sheetDate.date.currentMonth,
+                year: sheetDate.date.currentYear,                
             });
             timesheet.save();
         }

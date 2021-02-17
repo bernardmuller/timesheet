@@ -4,7 +4,8 @@ const Submission = require('./submission');
 
 const timesheetSchema = new Schema({
     name: String,
-    month: String,  // Needs automation - Month
+    month: String, 
+    year: String,
     submissions: [
         {
             type: Schema.Types.ObjectId,

@@ -17,7 +17,9 @@ const seedDB = async () => {
     await Timesheet.deleteMany({})
     
     const timesheet = new Timesheet ({
-        month: 'TEST 2021',      
+        month: 'TEST 2021',  
+        year: '2021',
+        month: 'TEST'    
     })
     await timesheet.save()
     

@@ -27,17 +27,60 @@ for (let i = 0; i < 3; i++) {
 }
 const dir = newDirArr.join('\\')
 
-async function create() {
-    const workbook = new ExcelJS.Workbook();    
+function addEntries(workbook, timesheet) {    
+    const sheet = workbook.getWorksheet(`${timesheet.month}`);
+    const submissions = [...timesheet.submissions]
+    console.log(submissions)
+    for (let submission of submissions) {
+        console.log('check')
+        // let lastRow = sheet.lastRow;
+        // let newEntryRow = sheet.getRow(lastRow++);
+        // newEntryRow.getCell('A').value = submission.day;  
 
-    const sheet = workbook.addWorksheet('works');
-    sheet.getCell('A1').value = 'TIMESHEET';
-
-    await workbook.xlsx.writeFile(path.join(__dirname, '../docs/works.xlsx')); 
+        // // newEntryRow.commit(); 
+        
+        // for (let i = 1; i < submissions.length; i++) {
+            const rowValues = [];
+            rowValues[1] = submission.day;
+            rowValues[2] = submission.description;
+            rowValues[3] = submission.project;
+            sheet.addRow(rowValues);
+        // }
+        
+    }  
+    
 }
 
-module.exports.createFile = () => {
-    create()    
+async function create(timesheet) {
+    const workbook = new ExcelJS.Workbook();    
+    const sheet = workbook.addWorksheet(`${timesheet.month}_${timesheet.year}`);    
+
+    sheet.getCell('A1').value = 'TIMESHEET';
+    sheet.getCell('B1').value = 'cnr';
+    sheet.getCell('C1').value = '.Architects';
+
+    sheet.getCell('A3').value = 'Name:';
+    sheet.getCell('B3').value = 'XXX';
+
+
+    sheet.getCell('A4').value = 'Month:';
+    sheet.getCell('B4').value = `${timesheet.month} ${timesheet.year}`;
+
+    sheet.getCell('A6').value = 'DATE';
+    sheet.getCell('B6').value = 'DESCRIPTION';
+    sheet.getCell('C6').value = 'PROJECT';
+
+    addEntries(workbook, timesheet)
+    
+    
+        
+    await workbook.xlsx.writeFile(path.join(__dirname, `../docs/${timesheet.month}.xlsx`)); 
+}
+
+
+
+module.exports.createFile = (timesheet) => {
+    create(timesheet)    
 }
 
 
@@ -187,6 +230,8 @@ class Editor {
         newEntryRow.getCell('B').value = prompt("Enter today's work description: ");
         newEntryRow.getCell('C').value = prompt('Project: ');
         newEntryRow.commit();
+
+        
     }
 
     async addDescription(timebook) {
