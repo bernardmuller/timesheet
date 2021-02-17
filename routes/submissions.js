@@ -50,6 +50,7 @@ router.post('/', validateSubmission, catchAsync(async(req, res, next) => {
     const newSubmission = new Submission(req.body.submission);
     const timesheet = await Timesheet.findById(req.params.id);
     timesheet.submissions.push(newSubmission)
+    newSubmission.timesheet.push(timesheet);
     const selectedDay = req.body.submission.date.slice(8,10)
     newSubmission.day = selectedDay;
     await timesheet.save();

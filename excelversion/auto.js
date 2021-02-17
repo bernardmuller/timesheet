@@ -1,38 +1,57 @@
 const fs = require('fs');
-const XLSX = require('xlsx');
-const prompt = require('prompt-sync')();
-const figlet = require('figlet');
+const path = require('path');
+// const XLSX = require('xlsx');
+// const prompt = require('prompt-sync')();
 // import {months} from 'months';
+const ExcelJS = require('exceljs');
+const timesheet = require('../models/timesheet');
 
-const months = {
-    '1': 'January',
-    '2': 'February',
-    '3': 'March',
-    '4': 'April',
-    '5': 'May',
-    '6': 'June',
-    '7': 'July',
-    '8': 'August',
-    '9': 'September',
-    '10': 'October',
-    '11': 'November',
-    '12': 'December'
-}
+const months = require('../utils/months');
 
+
+// date manager
 const date = new Date();
 const day = date.toISOString().slice(8,10);
-const month = months[date.toISOString().slice(5,7)];
-// const month = 'July';
+const month = months.months[date.toISOString().slice(5,7)];
+
 const year = date.toISOString().slice(0,4);
-const progDir = process.cwd();
 const bookName = year + '_timebook.xlsx';
-const bookPath = progDir + '/timesheets/' + bookName;
 const weekNum = Math.floor((day - 1) / 7 + 1);
-// let timebook = new ExcelJS.Workbook();
+
+
+const dirArr = process.cwd().split('\\');
+const newDirArr = []
+for (let i = 0; i < 3; i++) {
+    const el = dirArr[i];    
+    newDirArr.push(el)    
+}
+const dir = newDirArr.join('\\')
+
+async function create() {
+    const workbook = new ExcelJS.Workbook();    
+
+    const sheet = workbook.addWorksheet('works');
+    sheet.getCell('A1').value = 'TIMESHEET';
+
+    await workbook.xlsx.writeFile(path.join(__dirname, '../docs/works.xlsx')); 
+}
+
+module.exports.createFile = () => {
+    create()    
+}
 
 
 
 
+
+
+
+
+
+
+
+
+/// old
 class Setup {
     constructor () {
     }
@@ -221,13 +240,13 @@ class Styler {
 
 
 //----MAIN----//
-const setup = new Setup();
-const styler = new Styler();
-const editor = new Editor();
+// const setup = new Setup();
+// const styler = new Styler();
+// const editor = new Editor();
 
-// Setup
+// // Setup
 
-setup.initialize();
+// setup.initialize();
 // editor
 //editor.edit();
 // styler
@@ -235,7 +254,7 @@ setup.initialize();
 //styler.headers();
 
 
-    
+
 
 
 

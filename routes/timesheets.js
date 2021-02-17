@@ -10,6 +10,10 @@ const sheetDate = require('../utils/date');
 const catchAsync = require('../utils/catchAsync');
 const ExpressError = require('../utils/expressError');
 const Joi = require('joi');
+const path = require('path');
+
+//Excel
+const toExcel = require('../excelversion/auto');
 
 router.get('/', catchAsync(async(req, res) => {
     const timesheets = await Timesheet.find({});
@@ -34,6 +38,24 @@ router.get('/:id', catchAsync(async(req, res) => {
 //     res.render('timesheets/show', { timesheet }) 
 // }))
 
+router.get('/:id/download', catchAsync(async(req, res) => {
+    const { id } = req.params;    
+    const timesheet = await Timesheet.findById(id)
+    .populate({
+        path: 'submissions',
+        options: {
+            sort: {day: 1}
+        }})
+    .populate({
+        path: 'submissions',
+        options: {
+            sort: {day: 1}
+        }})
+    const filePath = path.join(__dirname, '../docs/works.xlsx')
+    toExcel.createFile(timesheet)
+    res.render('timesheets/download', { filePath })
+}))
+
 
 router.post('/', catchAsync(async (req, res, next) => {      
     Timesheet.find({month: sheetDate.date.currentDate}, function(err, docs){
@@ -49,6 +71,8 @@ router.post('/', catchAsync(async (req, res, next) => {
     })  
     res.redirect('/timesheets')
 }))
+
+
 
 router.delete('/:id', catchAsync(async(req, res) =>{
     const { id } = req.params;
