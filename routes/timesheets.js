@@ -1,6 +1,9 @@
 const express = require('express');
 const router = express.Router({mergeParams: true});
 
+//temp
+const axios = require('axios').default;
+
 // Models // 
 const Timesheet = require('../models/timesheet');
 
@@ -32,11 +35,6 @@ router.get('/:id', catchAsync(async(req, res) => {
     res.render('timesheets/show', { timesheet }) 
 }))
 
-// router.get('/:id/submissions', catchAsync(async (req, res) => {
-//     const { id } = req.params;
-//     const timesheet = await Timesheet.findById(id).populate('submissions');
-//     res.render('timesheets/show', { timesheet }) 
-// }))
 
 router.get('/:id/download', catchAsync(async(req, res) => {
     const { id } = req.params;    
@@ -46,14 +44,18 @@ router.get('/:id/download', catchAsync(async(req, res) => {
         options: {
             sort: {day: 1}
         }})
-    .populate({
-        path: 'submissions',
-        options: {
-            sort: {day: 1}
-        }})
     toExcel.createFile(timesheet)
     const filePath = path.join(__dirname, '../docs/works.xlsx')
     res.render('timesheets/download', {filePath})
+}))
+
+
+router.get('/:id/pdf', catchAsync(async(req, res) => {
+    const { id } = req.params; 
+    const response = await axios.get(`http://localhost:8080/timesheets/${id}`)
+    console.log(response.data)
+    const filePath = path.join(__dirname, '../docs/works.xlsx')
+    res.redirect('/timesheets')
 }))
 
 
