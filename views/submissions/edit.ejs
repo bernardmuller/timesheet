@@ -19,8 +19,16 @@
             </div>                
             <div class="mb-3">
                 <button class="btn btn-success">Accept</button>
-            </div>            
+            </div> 
+                     
         </form>
-        <!-- <a href="/timesheets/<=timesheet._id%>">Back to Timesheet</a> -->
+        <form action="/timesheets/<%=timesheet._id%>/submissions/<%=submission._id%>?_method=DELETE" method="POST" novalidate>
+            <div class="mb-3">
+                <button class="btn btn-danger">Delete</button>
+            </div>  
+        </form>        
+    </div>
+    
 </div>
+
 
