@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router({mergeParams: true});
+const passport = require('passport');
 
 //temp
 const axios = require('axios').default;
@@ -14,16 +15,17 @@ const catchAsync = require('../utils/catchAsync');
 const ExpressError = require('../utils/expressError');
 const Joi = require('joi');
 const path = require('path');
+const { isLoggedIn } = require('../utils/isLoggedIn');
 
 //Excel
 const toExcel = require('../excelversion/auto');
 
-router.get('/', catchAsync(async(req, res) => {
+router.get('/', isLoggedIn, catchAsync(async(req, res) => {    
     const timesheets = await Timesheet.find({});
     res.render('timesheets/index', { timesheets });
 }))
 
-router.get('/:id', catchAsync(async(req, res) => {
+router.get('/:id', isLoggedIn,catchAsync(async(req, res) => {
     const { id } = req.params;    
     const timesheet = await Timesheet.findById(id)
     .populate({
@@ -33,13 +35,13 @@ router.get('/:id', catchAsync(async(req, res) => {
         }})
     if (!timesheet) {
         req.flash('success', 'Timesheet does not exist.');
-        res.redirect('/timesheets');
+        return res.redirect('/timesheets');
     }
     res.render('timesheets/show', { timesheet }) 
 }))
 
 
-router.get('/:id/download', catchAsync(async(req, res) => {
+router.get('/:id/download', isLoggedIn, catchAsync(async(req, res) => {
     const { id } = req.params;    
     const timesheet = await Timesheet.findById(id)
     .populate({
@@ -62,7 +64,7 @@ router.get('/:id/download', catchAsync(async(req, res) => {
 // }))
 
 
-router.post('/', catchAsync(async (req, res) => {      
+router.post('/', isLoggedIn, catchAsync(async (req, res) => {      
     Timesheet.find({name: sheetDate.date.currentDate}, function(err, docs){
         if (docs.length){           
             req.flash('success', `Timesheet for ${sheetDate.date.currentDate} already exists.`);
@@ -81,7 +83,7 @@ router.post('/', catchAsync(async (req, res) => {
 
 
 
-router.delete('/:id', catchAsync(async(req, res) =>{
+router.delete('/:id', isLoggedIn, catchAsync(async(req, res) =>{
     const { id } = req.params;
     await Timesheet.findByIdAndDelete(id);
     res.redirect('/timesheets')

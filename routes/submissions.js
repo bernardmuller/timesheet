@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router({mergeParams: true});
 const { submissionSchema } = require('../schemas');
+const passport = require('passport');
 
 // Models // 
 const Submission = require('../models/submission');
@@ -12,6 +13,7 @@ const date = require('../utils/date');
 const catchAsync = require('../utils/catchAsync');
 const ExpressError = require('../utils/expressError');
 const Joi = require('joi');
+const { isLoggedIn } = require('../utils/isLoggedIn');
 
 const newDate = new Date();
 const defaultDate = newDate.toISOString().slice(0,10);
@@ -34,7 +36,8 @@ const validateSubmission = (req, res, next) => {
 //     res.render('submissions/index', { submissions });
 // })
 
-router.get('/new', catchAsync(async(req, res) => {    
+router.get('/new', isLoggedIn, catchAsync(async(req, res) => {  
+    
     const { id } = req.params;    
     const timesheet = await Timesheet.findById(id);
     res.render('submissions/new', { timesheet, defaultDate })
@@ -46,7 +49,7 @@ router.get('/new', catchAsync(async(req, res) => {
 //     res.render('submissions/show', { submission })
 // })
 
-router.post('/', validateSubmission, catchAsync(async(req, res) => {     
+router.post('/', isLoggedIn, validateSubmission, catchAsync(async(req, res) => {     
     const newSubmission = new Submission(req.body.submission);
     const timesheet = await Timesheet.findById(req.params.id);
     timesheet.submissions.push(newSubmission)
@@ -59,16 +62,20 @@ router.post('/', validateSubmission, catchAsync(async(req, res) => {
     res.redirect(`/timesheets/${timesheet._id}`)
 }))
 
-router.get('/:subID/edit', catchAsync(async(req, res) => {
+router.get('/:subID/edit', isLoggedIn, catchAsync(async(req, res) => {
     const { id } = req.params;
     const timesheet = await Timesheet.findById(id);
     const { subID } = req.params;
     const submission = await Submission.findById(subID);
+    if (!submission) {
+        req.flash('error', 'Cannot find that submission');
+        return res.redirect(`/timesheets/${timesheet._id}`);
+    }
     res.render('submissions/edit', { timesheet, submission })
 }))
 
 
-router.put('/:subID', catchAsync(async(req, res) => {
+router.put('/:subID', isLoggedIn, catchAsync(async(req, res) => {
     const { id } = req.params;
     const timesheet = await Timesheet.findById(id);
     const { subID } = req.params;
@@ -78,7 +85,7 @@ router.put('/:subID', catchAsync(async(req, res) => {
     res.redirect(`/timesheets/${timesheet._id}`)
 }))
 
-router.delete('/:subID', catchAsync(async(req, res) =>{
+router.delete('/:subID', isLoggedIn, catchAsync(async(req, res) =>{
     const { id } = req.params;
     const timesheet = await Timesheet.findById(id);
     const { subID } = req.params;
