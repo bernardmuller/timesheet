@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const Submission = require('./submission');
+const User = require('./user');
 
 const timesheetSchema = new Schema({
     name: String,
@@ -11,7 +12,11 @@ const timesheetSchema = new Schema({
             type: Schema.Types.ObjectId,
             ref: 'Submission'
         }
-    ]
+    ],
+    owner: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    }
 })
 
 timesheetSchema.post('findOneAndDelete', async function(doc) {

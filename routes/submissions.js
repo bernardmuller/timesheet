@@ -14,27 +14,12 @@ const catchAsync = require('../utils/catchAsync');
 const ExpressError = require('../utils/expressError');
 const Joi = require('joi');
 const { isLoggedIn } = require('../utils/isLoggedIn');
+const { isOwner } = require('../utils/isOwner');
+const { validateSubmission } = require('../utils/validateSubmission');
 
 const newDate = new Date();
 const defaultDate = newDate.toISOString().slice(0,10);
 
-
-//Submission Validation
-const validateSubmission = (req, res, next) => {    
-    const { error } = submissionSchema.validate(req.body);    
-    if(error){
-        const msg = error.details.map(el => el.message).join(',')
-        throw new ExpressError(msg, 400)
-    } else {
-        next()
-    }
-}
-
-
-// app.get('/', async (req, res) => {
-//     const submissions = await Submission.findbyId(req.body.params);
-//     res.render('submissions/index', { submissions });
-// })
 
 router.get('/new', isLoggedIn, catchAsync(async(req, res) => {  
     
@@ -43,11 +28,6 @@ router.get('/new', isLoggedIn, catchAsync(async(req, res) => {
     res.render('submissions/new', { timesheet, defaultDate })
 }))
 
-// app.get('/:subID', async (req, res) =>{
-//     const { subID } = req.params;
-//     const submission = await Submission.findById(subID);
-//     res.render('submissions/show', { submission })
-// })
 
 router.post('/', isLoggedIn, validateSubmission, catchAsync(async(req, res) => {     
     const newSubmission = new Submission(req.body.submission);
@@ -56,17 +36,19 @@ router.post('/', isLoggedIn, validateSubmission, catchAsync(async(req, res) => {
     newSubmission.timesheet.push(timesheet);
     const selectedDay = req.body.submission.date.slice(8,10);
     newSubmission.day = selectedDay;
+    newSubmission.owner = req.user._id;
     await timesheet.save();
     await newSubmission.save();
     req.flash('success', 'Daily submission submitted.');
     res.redirect(`/timesheets/${timesheet._id}`)
 }))
 
-router.get('/:subID/edit', isLoggedIn, catchAsync(async(req, res) => {
+
+router.get('/:subID/edit', isLoggedIn, isOwner, catchAsync(async(req, res) => {
     const { id } = req.params;
     const timesheet = await Timesheet.findById(id);
     const { subID } = req.params;
-    const submission = await Submission.findById(subID);
+    const submission = await Submission.findById(subID);       
     if (!submission) {
         req.flash('error', 'Cannot find that submission');
         return res.redirect(`/timesheets/${timesheet._id}`);
@@ -75,17 +57,19 @@ router.get('/:subID/edit', isLoggedIn, catchAsync(async(req, res) => {
 }))
 
 
-router.put('/:subID', isLoggedIn, catchAsync(async(req, res) => {
+router.put('/:subID', isLoggedIn, isOwner, catchAsync(async(req, res) => {
     const { id } = req.params;
-    const timesheet = await Timesheet.findById(id);
-    const { subID } = req.params;
-    const updatedSubmission = await Submission.findByIdAndUpdate(subID, {...req.body.submission}, {runValidators: true, new: true, useFindAndModify:false});   
-    await updatedSubmission.save(); 
+    const timesheet = await Timesheet.findById(id)
+    .populate('owner');
+    const { subID } = req.params;   
+    const updatedSubmission = await Submission.findByIdAndUpdate(subID, {...req.body.submission}, {runValidators: true, new: true, useFindAndModify:false});  
+    await updatedSubmission.save();
     req.flash('success', 'Submission Successfully Updated.');
-    res.redirect(`/timesheets/${timesheet._id}`)
-}))
+    res.redirect(`/timesheets/${timesheet._id}`)      
+}));
 
-router.delete('/:subID', isLoggedIn, catchAsync(async(req, res) =>{
+
+router.delete('/:subID', isLoggedIn, isOwner, catchAsync(async(req, res) =>{
     const { id } = req.params;
     const timesheet = await Timesheet.findById(id);
     const { subID } = req.params;

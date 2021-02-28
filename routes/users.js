@@ -11,7 +11,7 @@ const ExpressError = require('../utils/expressError');
 const Joi = require('joi');
 const path = require('path');
 const { isLoggedIn } = require('../utils/isLoggedIn');
-const { nextTick } = require('process');
+
 
 router.get('/', (req, res) => {
     res.render('users/register')

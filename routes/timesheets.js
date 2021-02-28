@@ -16,16 +16,18 @@ const ExpressError = require('../utils/expressError');
 const Joi = require('joi');
 const path = require('path');
 const { isLoggedIn } = require('../utils/isLoggedIn');
+const { isOwner } = require('../utils/isOwner');
 
 //Excel
 const toExcel = require('../excelversion/auto');
 
-router.get('/', isLoggedIn, catchAsync(async(req, res) => {    
-    const timesheets = await Timesheet.find({});
+router.get('/', isLoggedIn, catchAsync(async(req, res) => {   
+    const timesheets = await Timesheet.find({owner: req.user._id});
     res.render('timesheets/index', { timesheets });
 }))
 
-router.get('/:id', isLoggedIn,catchAsync(async(req, res) => {
+
+router.get('/:id', isLoggedIn, isOwner ,catchAsync(async(req, res) => {
     const { id } = req.params;    
     const timesheet = await Timesheet.findById(id)
     .populate({
@@ -33,6 +35,7 @@ router.get('/:id', isLoggedIn,catchAsync(async(req, res) => {
         options: {
             sort: {day: 1}
         }})
+    .populate('owner')
     if (!timesheet) {
         req.flash('success', 'Timesheet does not exist.');
         return res.redirect('/timesheets');
@@ -65,20 +68,23 @@ router.get('/:id/download', isLoggedIn, catchAsync(async(req, res) => {
 
 
 router.post('/', isLoggedIn, catchAsync(async (req, res) => {      
-    Timesheet.find({name: sheetDate.date.currentDate}, function(err, docs){
+    Timesheet.find({name: sheetDate.date.currentDate, owner:req.user._id}, function(err, docs){
         if (docs.length){           
             req.flash('success', `Timesheet for ${sheetDate.date.currentDate} already exists.`);
+            res.redirect('/timesheets')
         } else {
             const timesheet = new Timesheet({
                 name: sheetDate.date.currentDate,
                 month: sheetDate.date.currentMonth,
-                year: sheetDate.date.currentYear,                
+                year: sheetDate.date.currentYear,   
+                owner: req.user._id             
             });
             timesheet.save();
             req.flash('success', `Timesheet for ${sheetDate.date.currentDate} created.`);
+            res.redirect('/timesheets')
         }
-    })      
-    res.redirect('/timesheets')
+    })     
+    
 }))
 
 

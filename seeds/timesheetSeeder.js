@@ -19,7 +19,8 @@ const seedDB = async () => {
     const timesheet = new Timesheet ({
         month: 'TEST 2021',  
         year: '2021',
-        month: 'TEST'    
+        month: 'TEST',  
+        owner: '6036c081f030940d3055669d'
     })
     await timesheet.save()
     

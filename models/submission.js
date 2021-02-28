@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-
+const User = require('./user');
 
 
 const submissionSchema = new Schema({
@@ -10,6 +10,10 @@ const submissionSchema = new Schema({
         type: String,        
     },
     project: String,
+    owner: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    },
     timesheet: [
         {
             type: Schema.Types.ObjectId,
