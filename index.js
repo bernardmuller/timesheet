@@ -10,18 +10,16 @@ const passport = require('passport');
 const localPassport = require('passport-local');
 const User = require('./models/user')
 
+
 //utilities
 const ExpressError = require('./utils/expressError');
-const Joi = require('joi');
+
 
 // Routes //
 const timesheetRoutes = require('./routes/timesheets')
 const submissionRoutes = require('./routes/submissions')
 const userRoutes = require('./routes/users')
 
-// models //
-const Submission = require('./models/submission');
-const Timesheet = require('./models/timesheet');
 
 // Database connection //
 mongoose.connect('mongodb://localhost:27017/timesheetApp', {
@@ -71,6 +69,7 @@ app.use(passport.session());
 passport.use(new localPassport(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
+
 
 // globals //
 app.use((req, res, next) => {
