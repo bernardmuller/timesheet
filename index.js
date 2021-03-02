@@ -9,7 +9,8 @@ const flash = require('connect-flash');
 const passport = require('passport');
 const localPassport = require('passport-local');
 const User = require('./models/user')
-
+const mongoSanitize = require('express-mongo-sanitize');
+const helmet = require('helmet');
 
 //utilities
 const ExpressError = require('./utils/expressError');
@@ -46,17 +47,20 @@ app.use('/docs', express.static(path.join(__dirname, 'docs')))
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 app.use(express.static('public'));
-
+app.use(mongoSanitize());
+app.user(helmet({ contentSecurityPolicy: false }));
 
 // Session & Flash // 
 const sessionConfig = {
+    name: 'tsSession',
     secret : 'password1234',
     resave : false,
     saveUninitialized: true,
     cookie : {
         httpOnly: true,
-        expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
-        maxAge: 1000 * 60 * 60 * 24 *7
+        // secure: true,
+        expires: Date.now() + 1000 * 60 * 60 * 24 * 31,
+        maxAge: 1000 * 60 * 60 * 24 * 31
     }
 }
 app.use(session(sessionConfig));
