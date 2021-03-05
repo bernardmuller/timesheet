@@ -76,7 +76,7 @@ async function create(timesheet) {
     sheet.getCell('C1').value = '.Architects';
 
     sheet.getCell('A3').value = 'Name:';
-    sheet.getCell('B3').value = 'XXX';
+    sheet.getCell('B3').value = `${timesheet.owner.username}`;
 
 
     sheet.getCell('A4').value = 'Month:';
@@ -104,8 +104,11 @@ async function create(timesheet) {
     borders(workbook, timesheet);
     
     
-        
-    await workbook.xlsx.writeFile(path.join(__dirname, `../docs/${timesheet.owner.id}/${timesheet.month}.xlsx`)); 
+    try {  
+       const file = await workbook.xlsx.writeFile(path.join(__dirname, `../docs/${timesheet.owner.username}_${timesheet.month}_${timesheet.year}.xlsx`)); 
+    } catch(e){
+        console.log(e)
+    }
 }
 
 

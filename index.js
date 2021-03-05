@@ -48,7 +48,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 app.use(express.static('public'));
 app.use(mongoSanitize());
-app.user(helmet({ contentSecurityPolicy: false }));
+app.use(helmet({ contentSecurityPolicy: false }));
 
 // Session & Flash // 
 const sessionConfig = {

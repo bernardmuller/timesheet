@@ -1,29 +1,22 @@
 <% layout('layouts/boilerplate') %>
-<body >
+
     <div class="row d-flex justify-content-center text-center">
         <h1>All Timesheets</h1>
         <% for(let timesheet of timesheets) { %>
             <div class="col-sm-4">
                 <div class="card shadow p-2 mb-5 bg-body rounded">
                     <div class="card-body">
-                    <h5 class="card-title fs-4 mb-2"><%=timesheet.month%> <%=timesheet.year%></h5>                    
-                    <div class="d-flex justify-content-center align-items-center">
-                        <a href="/timesheets/<%=timesheet._id%>" class="mb-1 mt-2 btn btn-primary">View</a>
-                        
-                    </div>
-                    <form action="/timesheets/<%=timesheet._id%>?_method=DELETE" method="POST">
-                        <button class="btn btn-sm btn-danger">Delete</button>
-                    </form>
+                        <h5 class="card-title fs-4 mb-2"><%=timesheet.month%> <%=timesheet.year%></h5>                    
+                        <div class="d-flex justify-content-center align-items-center">
+                            <a href="/timesheets/<%=timesheet._id%>" class="mb-1 mt-2 btn btn-primary">View</a>
+                            
+                        </div>                    
                     </div>
                 </div>
             </div>
-        <% } %>
-        <form action="/timesheets" method="POST">
-            <button class="btn btn-success">New Timesheet</button>
-        </form>
-    </div>
-    
-</body>
+        <% } %>        
+    </div>    
+
 
 
 

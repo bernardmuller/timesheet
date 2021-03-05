@@ -1,7 +1,10 @@
 const Timesheet = require('../models/timesheet');
 const { submissionSchema } = require('../schemas');
 const ExpressError = require('./expressError');
+const sheetDate = require('./date');
 
+const newDate = new Date();
+const defaultDate = newDate.toISOString().slice(0,10);
 
 module.exports.isOwner = async (req, res, next) => {
     const {id} = req.params;
@@ -25,6 +28,24 @@ module.exports.isLoggedIn = (req, res, next) => {
 };
 
 
+module.exports.createTimesheet = async (req, res, next) => {      
+    Timesheet.find({name: sheetDate.date.currentDate, owner:req.user._id}, function(err, docs){
+        if (!docs.length){           
+            const timesheet = new Timesheet({
+                name: sheetDate.date.currentDate,
+                month: sheetDate.date.currentMonth,
+                year: sheetDate.date.currentYear,   
+                owner: req.user._id             
+            });
+            timesheet.save();
+            req.flash('success', `Timesheet for ${sheetDate.date.currentDate} created.`);
+            res.redirect('/timesheets')
+        }
+    })  
+    next(); 
+};
+
+
 module.exports.validateSubmission = (req, res, next) => {    
     const { error } = submissionSchema.validate(req.body);    
     if(error){
@@ -34,3 +55,5 @@ module.exports.validateSubmission = (req, res, next) => {
         next()
     }
 };
+
+

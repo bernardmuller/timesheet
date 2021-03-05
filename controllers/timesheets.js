@@ -1,8 +1,10 @@
 const Timesheet = require('../models/timesheet');
+const path = require('path');
 
 const months = require('../utils/months');
 const sheetDate = require('../utils/date');
 
+const toExcel = require('../excelversion/auto')
 
 module.exports.index = async(req, res) => {   
     const timesheets = await Timesheet.find({owner: req.user._id});
@@ -34,30 +36,16 @@ module.exports.renderDownload = async(req, res) => {
         options: {
             sort: {day: 1}
         }})
+    .populate({
+        path: 'owner'
+    })
     toExcel.createFile(timesheet)
-    const filePath = `../docs/${timesheet.owner.id}/${timesheet.month}.xlsx`;
-    res.render('timesheets/download', {filePath})
+    const filePath = path.join(__dirname, `../docs/${timesheet.owner.username}_${timesheet.month}_${timesheet.year}.xlsx`);
+    res.render('timesheets/download', {timesheet})
 };
 
 
-module.exports.createTimesheet = async (req, res) => {      
-    Timesheet.find({name: sheetDate.date.currentDate, owner:req.user._id}, function(err, docs){
-        if (docs.length){           
-            req.flash('success', `Timesheet for ${sheetDate.date.currentDate} already exists.`);
-            res.redirect('/timesheets')
-        } else {
-            const timesheet = new Timesheet({
-                name: sheetDate.date.currentDate,
-                month: sheetDate.date.currentMonth,
-                year: sheetDate.date.currentYear,   
-                owner: req.user._id             
-            });
-            timesheet.save();
-            req.flash('success', `Timesheet for ${sheetDate.date.currentDate} created.`);
-            res.redirect('/timesheets')
-        }
-    })   
-};
+
 
 
 module.exports.deleteTimesheet = async(req, res) =>{

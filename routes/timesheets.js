@@ -4,7 +4,7 @@ const router = express.Router({mergeParams: true});
 
 // utils
 const catchAsync = require('../utils/catchAsync');
-const { isLoggedIn, isOwner } = require('../utils/middleware');
+const { isLoggedIn, isOwner, createTimesheet } = require('../utils/middleware');
 
 
 //controllers
@@ -13,8 +13,8 @@ const timesheets = require('../controllers/timesheets');
 
 //Routes
 router.route('/', )
-    .get(isLoggedIn, catchAsync(timesheets.index))
-    .post(isLoggedIn, catchAsync(timesheets.createTimesheet))
+    .get(isLoggedIn, createTimesheet,  catchAsync(timesheets.index))
+    // .post(isLoggedIn, catchAsync(timesheets.createTimesheet))
 
 
 router.route('/:id')
