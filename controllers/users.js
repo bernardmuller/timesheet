@@ -5,6 +5,11 @@ const sheetDate = require('../utils/date');
 const newDate = new Date();
 const defaultDate = newDate.toISOString().slice(0,10);
 
+
+module.exports.renderHome = (req, res) => {
+    res.render('home')
+}
+
 module.exports.renderRegister = (req, res) => {
     res.render('users/register')
 };
