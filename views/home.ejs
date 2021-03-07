@@ -18,26 +18,9 @@
                 <p> Welcome to Timesheet Web! <br> Manage your timesheets  <br>
                 Feel free to share some of your own and comment on others!</p>                
             </section>
-            <section class="login-container">                
-                <form action="/login" method="POST" novalidate class="validated-form">
-                    <div class="input-container">
-                        <label for="username" class="form-label">Username</label>
-                        <input type="text" class="form-control" name="username" id="username" required>
-                        <div class="valid-feedback">
-                            Looks Good!
-                        </div>
-                    </div>    
-                    <div class="input-container">
-                        <label for="password" class="form-label">Password</label>
-                        <input type="password" class="form-control" name="password" id="password" required>
-                        <div class="valid-feedback">
-                            Looks Good!
-                        </div>
-                    </div>
-                    <button class="btn btn-success">Login</button>
-                </form>
-            </section>
-        </section>
+            <form action="/login">
+                    <button>Login</button>
+            </form>            
     </main>
 
     <footer class="mt-auto text-white-50">

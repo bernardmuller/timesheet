@@ -22,7 +22,7 @@ router.route('/register')
 
 router.route('/login')
     .get(users.renderLogin)
-    .post(passport.authenticate('local', {failureFlash: true, failureRedirect: '/login'}), users.loginUser)
+    .post(passport.authenticate('local', {failureFlash: true, failureRedirect: '/'}), users.loginUser)
 
 router.route('/profile')
     .get(isLoggedIn, users.renderProfile)

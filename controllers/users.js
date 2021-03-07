@@ -53,7 +53,7 @@ module.exports.renderProfile = async (req, res) => {
 module.exports.logoutUser = (req, res) => {
     req.logout();
     req.flash('success', 'Goodbye');
-    res.redirect('/login')
+    res.redirect('/')
 };
 
 
