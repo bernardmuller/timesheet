@@ -18,7 +18,7 @@ router.route('/', )
 
 
 router.route('/:id')
-    .get(isLoggedIn, isOwner ,catchAsync(timesheets.renderTimesheet))
+    .get(isLoggedIn, isOwner, catchAsync(timesheets.renderTimesheet))
     .delete(isLoggedIn, isOwner, catchAsync(timesheets.deleteTimesheet))
 
 

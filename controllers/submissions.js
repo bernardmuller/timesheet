@@ -4,7 +4,8 @@ const ExpressError = require('../utils/expressError');
 
 const newDate = new Date();
 const defaultDate = newDate.toISOString().slice(0,10);
-
+const currentMonth = newDate.toISOString().slice(0,7);
+console.log(currentMonth)
 
 module.exports.createSubmission = async(req, res) => {     
     const newSubmission = new Submission(req.body.submission);
@@ -37,7 +38,7 @@ module.exports.renderEditForm = async(req, res) => {
 module.exports.renderNewForm = async(req, res) => {      
     const { id } = req.params;    
     const timesheet = await Timesheet.findById(id);
-    res.render('submissions/new', { timesheet, defaultDate })
+    res.render('submissions/new', { timesheet, defaultDate, currentMonth })
 };
 
 

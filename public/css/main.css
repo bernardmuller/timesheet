@@ -1,7 +1,3 @@
-
-
-
-
 /*//////////////////////////////////////////////////////////////////
 [ FONT ]*/
 
@@ -25,6 +21,7 @@ body, html {
 	height: 100%;
 	font-family: OpenSans-Regular, sans-serif;
   background: rgb(37, 37, 38);
+  overflow: hidden;
 }
 
 /*---------------------------------------------*/
@@ -161,6 +158,7 @@ iframe {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)
 }
 
+
 .wrap-login-heading {
   display: flex;
   justify-content: center;
@@ -171,6 +169,30 @@ iframe {
   font-size: 3.2em;  
   color: rgb(13, 13, 13);
 }
+
+.container-register100 {
+  width: 100%;  
+  min-height: 80vh;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  /* padding: 15px; */  
+}
+
+.wrap-register100 {
+  width: 500px;
+  background: rgb(242, 242, 242);
+  border-radius: 10px;
+  overflow: hidden;
+
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)
+}
+
 
 /*==================================================================
 [ Form ]*/
@@ -211,6 +233,17 @@ iframe {
   color: rgb(115, 115, 114);
   line-height: 1.2;
 }
+
+.input50 {
+  display: block;
+  width: 50%;
+  background: transparent;
+  font-family: OpenSans-Regular;
+  font-size: 15px;
+  color: rgb(115, 115, 114);
+  line-height: 1.2;
+}
+
 
 
 /*---------------------------------------------*/

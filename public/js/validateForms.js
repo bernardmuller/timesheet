@@ -1,3 +1,4 @@
+const { submissionSchema } = require("../../schemas")
 
             // Example starter JavaScript for disabling form submissions if there are invalid fields
 (function () {
@@ -13,8 +14,7 @@
                 if (!form.checkValidity()) {
                     event.preventDefault()
                     event.stopPropagation()
-                }
-
+                }                
                 form.classList.add('was-validated')
             }, false)
         })

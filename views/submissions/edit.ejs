@@ -1,34 +1,46 @@
 <% layout('layouts/boilerplate') %>
 <div class="row d-flex justify-content-center">
-    <h1 class="text-center">Edit Submission</h1>
-    <div class="col-10 ">
-        <form action="/timesheets/<%=timesheet._id%>/submissions/<%=submission._id%>?_method=PUT" method="POST" novalidate class="validated-form">            
-            <div class="mb-3">
-                <label for="description" class="form-label">Description</label>
-                <input class="form-control" type="text" name="submission[description]" id="description" value="<%=submission.description%>" required>
-                <div class="valid-feedback">
-                    Looks Good!
-                </div>
-            </div>
-            <div class="mb-3">
-                <label class="project" for="location">Project</label>
-                <input class="form-control" type="text" name="submission[project]" id="project" value="<%=submission.project%>" required>
-                <div class="valid-feedback">
-                    Looks Good!
-                </div>
-            </div>                
-            <div class="mb-3">
-                <button class="btn btn-success">Accept</button>
-            </div> 
-                     
-        </form>
-        <form action="/timesheets/<%=timesheet._id%>/submissions/<%=submission._id%>?_method=DELETE" method="POST" novalidate>
-            <div class="mb-3">
-                <button class="btn btn-danger">Delete</button>
-            </div>  
-        </form>        
+            
     </div>
     
 </div>
 
+
+<% layout('layouts/boilerplate') %>
+<%- include('../partials/navbar')  %>
+
+<div class="container mt-5 ">
+    <div class="row d-flex justify-content-center">
+        
+            <div class=" row d-flex justify-content-center align-items-center col-7 border px-3 py-5 mb-5 rounded bg-light ">
+                <h1 class="text-center">Edit Submission</h1>
+                <div class="col-10 ">
+                    <form action="/timesheets/<%=timesheet._id%>/submissions/<%=submission._id%>?_method=PUT" method="POST" novalidate class="validated-form">            
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Description</label>
+                            <input class="form-control" type="text" name="submission[description]" id="description" value="<%=submission.description%>" required>
+                            <div class="valid-feedback">
+                                Looks Good!
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="project" for="location">Project</label>
+                            <input class="form-control" type="text" name="submission[project]" id="project" value="<%=submission.project%>" required>
+                            <div class="valid-feedback">
+                                Looks Good!
+                            </div>
+                        </div>                
+                        <div class="mb-3 text-center">
+                            <button class="btn btn-success">Accept</button>
+                        </div> 
+                                 
+                    </form>
+                    <form action="/timesheets/<%=timesheet._id%>/submissions/<%=submission._id%>?_method=DELETE" method="POST" class="inline" novalidate>
+                        <div class="mb-3">
+                            <button class="btn btn-danger">Delete</button>
+                        </div>  
+                    </form>
+        
+    </div>
+</div>
 

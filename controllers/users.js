@@ -1,6 +1,7 @@
 const User = require('../models/user');
 const Timesheet = require('../models/timesheet');
 const sheetDate = require('../utils/date');
+const Submission = require('../models/submission');
 
 const newDate = new Date();
 const defaultDate = newDate.toISOString().slice(0,10);
@@ -17,17 +18,17 @@ module.exports.renderRegister = (req, res) => {
 
 module.exports.registerUser = async(req, res) => {
     try {
-        const { email, username, password } = req.body;
-        const user = new User({ email, username });
+        const { firstname, lastname, email, username, password } = req.body;
+        const user = new User({ firstname, lastname, email, username });
         const registeredUser = await User.register(user, password);
         req.login(registeredUser, err=> {
             if (err) return next(err);
-            req.flash('success', 'Welcome to Timesheet')
+            req.flash('success', 'Welcome to Timesheet Web')
             res.redirect('/timesheets')
         })        
     } catch (e) {
         req.flash('error', e.message)
-        res.redirect('register')
+        res.redirect('/register')
     }    
 };
 
@@ -45,10 +46,18 @@ module.exports.loginUser = (req, res) => {
 };
 
 module.exports.renderProfile = async (req, res) => {
-    const user = await User.findById(req.user._id)
-    res.render('users/profile', { user })
+    const user = await User.findById(req.user._id);
+    const submissions = await Submission.find({'owner': user._id});       
+    const latestSub = await Submission.find({'owner': user._id});
+    
+       
+    res.render('users/profile', { user, submissions })
 }
 
+module.exports.renderAdmin = (req, res) => {
+    console.log
+    res.send('admin page')
+}
 
 module.exports.logoutUser = (req, res) => {
     req.logout();

@@ -40,7 +40,7 @@ module.exports.renderDownload = async(req, res) => {
         path: 'owner'
     })
     toExcel.createFile(timesheet)
-    const filePath = path.join(__dirname, `../docs/${timesheet.owner.username}_${timesheet.month}_${timesheet.year}.xlsx`);
+    const filePath = path.join(__dirname, `../docs/${timesheet.owner.username}/${timesheet.owner.username}_${timesheet.month}_${timesheet.year}.xlsx`);
     res.render('timesheets/download', {timesheet})
 };
 

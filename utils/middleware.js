@@ -2,6 +2,7 @@ const Timesheet = require('../models/timesheet');
 const { submissionSchema } = require('../schemas');
 const ExpressError = require('./expressError');
 const sheetDate = require('./date');
+const User = require('../models/user');
 
 const newDate = new Date();
 const defaultDate = newDate.toISOString().slice(0,10);
@@ -26,6 +27,17 @@ module.exports.isLoggedIn = (req, res, next) => {
     } 
     next();
 };
+
+module.exports.isAdmin = (req, res, next) => {
+    const user = User.findById(req.user._id);
+    console.log(user.tree)
+    if (user.isAdmin === false) {
+        console.log('you are not admin')
+        req.flash('error', 'You do not have permission.')
+        return res.redirect('/timesheets')
+    }
+    next();
+}
 
 
 module.exports.createTimesheet = async (req, res, next) => {      

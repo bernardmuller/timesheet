@@ -1,5 +1,9 @@
-body {
+html, body {
     height: 100%;
-	font-family: OpenSans-Regular, sans-serif;
-    background: rgb(37, 37, 38);
+	font-family: OpenSans-Regular, sans-serif;    
 }
+
+/* .timesheet {
+    background-color: cornsilk;
+    color: black;
+} */
