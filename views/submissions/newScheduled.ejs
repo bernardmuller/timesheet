@@ -1,36 +1,45 @@
 <% layout('layouts/boilerplate') %>
-<div class="row d-flex justify-content-center">
-    <h1 class="text-center">New Submission</h1>
-    <div class="col-10 ">
-        <form action="/timesheets/<%=timesheet[0]._id%>/submissions" method="POST" novalidate class="validated-form">
-            <div class="mb-3">
-                <label for="date" class="form-label">Date</label>
-                <input type="date" class="form-control" name="submission[date]" id="date" value="<%=defaultDate%>">
-                <div class="valid-feedback">
-                    Looks Good!
-                </div>
+<%- include('../partials/navbar')  %>
+
+<div class="container mt-5 ">
+    <div class="row d-flex justify-content-center">
+        
+            <div class=" row d-flex justify-content-center align-items-center col-7 border px-3 py-5 mb-5 rounded bg-light ">
+                <h1 class="text-center">Scheduled Submission</h1>
+                <div class="col-10 ">
+                    <form action="/timesheets/<%=timesheet[0]._id%>/submissions" method="POST" novalidate class="validated-form">
+                        <div class="mb-3">
+                            <label for="date" class="form-label">Date</label>
+                            <input type="date"class="form-control" name="submission[date]" id="date" value="<%=defaultDate%>">
+                            <div class="valid-feedback">
+                                Looks Good!
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Description</label>
+                            <input class="form-control" type="text" name="submission[description]" id="description" required>
+                            <div class="valid-feedback">
+                                Looks Good!
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="project" for="location">Project</label>
+                            <input class="form-control" type="text" name="submission[project]" id="project" required>
+                            <div class="valid-feedback">
+                                Looks Good!
+                            </div>
+                        </div>                
+                        <div class="mb-3  text-center">
+                            <button class="btn btn-success">Submit</button>
+                        </div>            
+                    </form>
+                    <div >
+                        <a href="/timesheets">Timesheets</a>
+                    </div>
+                    
             </div>
-            <div class="mb-3">
-                <label for="description" class="form-label">Description</label>
-                <input class="form-control" type="text" name="submission[description]" id="description" required>
-                <div class="valid-feedback">
-                    Looks Good!
-                </div>
-            </div>
-            <div class="mb-3">
-                <label class="project" for="location">Project</label>
-                <input class="form-control" type="text" name="submission[project]" id="project" required>
-                <div class="valid-feedback">
-                    Looks Good!
-                </div>
-            </div>                
-            <div class="mb-3">
-                <button class="btn btn-success">Submit</button>
-            </div>            
-        </form>
-        <a href="/timesheets/<%=timesheet._id%>">Back to Timesheet</a>
+        
+    </div>
 </div>
-
-
 
 

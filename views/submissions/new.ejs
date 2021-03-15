@@ -10,7 +10,7 @@
                     <form action="/timesheets/<%=timesheet._id%>/submissions" method="POST" novalidate class="validated-form">
                         <div class="mb-3">
                             <label for="date" class="form-label">Date</label>
-                            <input type="date" min="<%=currentMonth%>" max="<%=currentMonth%>" class="form-control" name="submission[date]" id="date" value="<%=defaultDate%>">
+                            <input type="date"class="form-control" name="submission[date]" id="date" value="<%=defaultDate%>">
                             <div class="valid-feedback">
                                 Looks Good!
                             </div>

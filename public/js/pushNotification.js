@@ -1,13 +1,15 @@
+// const shell = require('shelljs')
+function redirectWindow () {    
+      location.replace('http://localhost:8080/scheduled');        
+}
+
+
 function checkTime() {
     const date = new Date();
     const now = date.toISOString().slice(11,19);
-    console.clear()
+    // console.clear()
     console.log(now)    
-    if (now === '11:40:00') {
-        if(Notification.permission === "granted") {
-            showNotification();
-        }
-    }
+    return now;    
 }
 
 
@@ -21,11 +23,11 @@ function askNotificationPermission() {
       }
 
       // set the button to shown or hidden, depending on what the user answers
-      if(Notification.permission === 'denied' || Notification.permission === 'default') {
-        notificationBtn.style.display = 'block';
-      } else {
-        notificationBtn.style.display = 'none';
-      }
+      // if(Notification.permission === 'denied' || Notification.permission === 'default') {
+      //   notificationBtn.style.display = 'block';
+      // } else {
+      //   notificationBtn.style.display = 'none';
+      // }
     }
 
     // Let's check if the browser supports notifications
@@ -69,6 +71,7 @@ function checkNotificationPromise() {
     })
     notification.onclick = (e) => {
         window.location.href = 'http://localhost:8080/scheduled'
+        Notification.close()
     }
 }
 
@@ -76,8 +79,13 @@ if (Notification.permission !== 'denied') {
     askNotificationPermission()
 }
 
-setInterval(checkTime, 1000)
-
+let now = setInterval(checkTime, 1000)
+if (now === '20:11:30') {
+  if(Notification.permission === "granted") {
+      showNotification();
+      redirectWindow()            
+  }        
+}
 
 
 
