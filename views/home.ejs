@@ -10,32 +10,46 @@
     <link rel="stylesheet" href="/css/home.css">
     <title>Timesheet Web</title>
 </head>
-<body>          
-    <main class="main-container">
-        <h1>Timesheet Web</h1>
-        <section class="content-container">
-            <section class="about-container">            
-                <p> Welcome to Timesheet Web! <br> Manage your timesheets  <br>
-                Feel free to share some of your own and comment on others!</p>                
+<body class="d-flex text-center text-white">  
+    <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+        <header class="mb-auto">
+            <div>
+                <h3 class="float-md-left mb-0">Timesheet Web</h3>
+                <nav class="nav nav-masthead justify-content-center float-md-right">                                     
+                    <% if(!currentUser) { %>
+                    <a class="nav-link" href="/login">Login</a>
+                    <a class="nav-link" href="/register">Register</a>
+                    <% } else { %>
+                    <a class="nav-link" href="/logout">Logout</a>
+                    <% } %>
+                </nav>
+            </div>
+        </header>        
+        <main class="main-container">        
+            <section class="content-container text-center">            
+                <section class="about-container">            
+                    <p> Welcome to Timesheet Web! <br>Specially built for the CNR Architects team<br>
+                    To automate and manage their timesheets.</p>  
+                
+                    <a href="/timesheets" class="btn btn-lg btn-secondary font-weight-bold border-white bg-white">View
+                        Timesheets</a>           
+                </section>                       
+        </main>
+
+        <footer class="mt-auto text-white-50 text-center text-decoration-none">
+            <section class="mt-2 mb-0">
+                <p class="m-0">Photo by <a href="https://unsplash.com/@danieledandreti?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Daniele D'Andreti</a> on <a href="/s/photos/architecture?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
+                </p>
+                <p class="m-0">Built by <a href="https://github.com/bernardmuller">bernardmuller</a> </p>
+                <p class="m-0">Copyright &copy; 2021 </p>
             </section>
-            <form action="/login">
-                    <button>Login</button>
-            </form>            
-    </main>
+        </footer>  
 
-    <footer class="mt-auto text-white-50">
-        <p>&copy; 2020 </p>
-    </footer>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js" integrity="sha384-q2kxQ16AaE6UbzuKqyBE9/u/KzioAlnx2maXQHiDX9d4/zp8Ok3f+M7DPm+Ib6IU" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.min.js" integrity="sha384-pQQkAEnwaBkjpqZ8RU1fF1AKtTcHJwFl3pblpTlHXybJjHpMYo79HY3hIi4NKxyj" crossorigin="anonymous"></script>
 
-
-    
-
-
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js" integrity="sha384-q2kxQ16AaE6UbzuKqyBE9/u/KzioAlnx2maXQHiDX9d4/zp8Ok3f+M7DPm+Ib6IU" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.min.js" integrity="sha384-pQQkAEnwaBkjpqZ8RU1fF1AKtTcHJwFl3pblpTlHXybJjHpMYo79HY3hIi4NKxyj" crossorigin="anonymous"></script>
-
-    <script src="/js/validateForms.js" ></script>
-    <script src="/js/pushNotification.js"></script>
+        <script src="/js/validateForms.js" ></script>
+        <script src="/js/pushNotification.js"></script>
 </body>
     
 </html>

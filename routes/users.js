@@ -12,7 +12,7 @@ const users = require('../controllers/users');
 
 
 //Routes
-router.get('/', users.renderLogin)
+router.get('/', users.renderHome)
 
 
 router.route('/register')

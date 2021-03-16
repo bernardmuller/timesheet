@@ -20,8 +20,9 @@
 body, html {
 	height: 100%;
 	font-family: OpenSans-Regular, sans-serif;
+  font-size: 500;
   background: rgb(37, 37, 38);
-  overflow: hidden;
+  overflow: hidden;  
 }
 
 /*---------------------------------------------*/

@@ -1,3 +1,7 @@
+if (process.env.NODE_ENV !== "production") {
+    require('dotenv').config();
+}
+
 const express = require('express');
 const app = express();
 const path = require('path');
@@ -19,10 +23,15 @@ const ExpressError = require('./utils/expressError');
 // Routes //
 const timesheetRoutes = require('./routes/timesheets')
 const submissionRoutes = require('./routes/submissions')
-const userRoutes = require('./routes/users')
+const userRoutes = require('./routes/users');
+// const { env } = require('process');
 
 
 // Database connection //
+
+const dbUrl = process.env.DBURL;
+
+// dbUrl
 mongoose.connect('mongodb://localhost:27017/timesheetApp', {
     useNewUrlParser: true,
     useCreateIndex: true,
@@ -53,7 +62,7 @@ app.use(helmet({ contentSecurityPolicy: false }));
 // Session & Flash // 
 const sessionConfig = {
     name: 'tsSession',
-    secret : 'password1234',
+    secret : process.env.SECRET,
     resave : false,
     saveUninitialized: true,
     cookie : {
@@ -65,6 +74,43 @@ const sessionConfig = {
 }
 app.use(session(sessionConfig));
 app.use(flash());
+
+
+const scriptSrcUrls = [
+    "https://stackpath.bootstrapcdn.com",
+    "https://api.tiles.mapbox.com",
+    "https://api.mapbox.com",
+    "https://kit.fontawesome.com",
+    "https://cdnjs.cloudflare.com",
+    "https://cdn.jsdelivr.net",
+];
+const styleSrcUrls = [
+    "https://kit-free.fontawesome.com",
+    "https://stackpath.bootstrapcdn.com",
+    "https://use.fontawesome.com",
+    "https://fonts.googleapis.com",
+    "https://cdn.jsdelivr.net",
+];
+const fontSrcUrls = [];
+app.use(
+    helmet.contentSecurityPolicy({
+        directives: {
+            defaultSrc: [],            
+            scriptSrc: ["'unsafe-inline'", "'self'", ...scriptSrcUrls],
+            styleSrc: ["'self'", "'unsafe-inline'", ...styleSrcUrls],
+            workerSrc: ["'self'", "blob:"],
+            childSrc: ["blob:"],
+            objectSrc: [],
+            imgSrc: [
+                "'self'",
+                "blob:",
+                "data:",
+                "https://images.unsplash.com",
+            ],
+            fontSrc: ["'self'", ...fontSrcUrls],
+        },
+    })
+);
 
 
 // passport - auth //
@@ -105,6 +151,6 @@ app.use((err, req, res, next) => {
 
 // listener //
 app.listen(8080, () => {
-    console.log('listening on port 3000');
+    console.log('listening on port 8080');
 })
 
