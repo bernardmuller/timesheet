@@ -15,7 +15,7 @@ const localPassport = require('passport-local');
 const User = require('./models/user')
 const mongoSanitize = require('express-mongo-sanitize');
 const helmet = require('helmet');
-const MongoStore = require("connect-mongo");
+const MongoDBStore = require("connect-mongo")(session);
 
 
 //utilities
@@ -47,26 +47,27 @@ db.once('open', () => {
 
 
 // Session & Flash // 
-const mongoStore = MongoStore.create({
-    mongoUrl: dbUrl,
-    collectionName: "sessions",
+const store = new MongoDBStore({
+    url: dbUrl,
+    secret,
+    touchAfter: 24 * 60 * 60
 });
 
-// store.on("error", function (e) {
-//     console.log("SESSION STORE ERROR", e)
-// })
+store.on("error", function (e) {
+    console.log("SESSION STORE ERROR", e)
+})
 
 const sessionConfig = {
-    store: mongoStore,
+    store,
     name: 'session',
-    secret,    
+    secret,
     resave: false,
     saveUninitialized: true,
     cookie: {
         httpOnly: true,
         // secure: true,
-        expires: Date.now() + 1000 * 60 * 60 * 24 * 31,
-        maxAge: 1000 * 60 * 60 * 24 * 31
+        expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+        maxAge: 1000 * 60 * 60 * 24 * 7
     }
 }
 app.use(session(sessionConfig));
@@ -162,6 +163,6 @@ app.use((err, req, res, next) => {
 const port = process.env.PORT || 8080;
 // listener //
 app.listen(port, () => {
-    console.log(`listening on port 8080 ${port}`);
+    console.log(`listening on port ${port}`);
 })
 
