@@ -1,6 +1,6 @@
 // const shell = require('shelljs')
 function redirectWindow () {    
-      location.replace('http://localhost:8080/scheduled');        
+      location.replace('https://timesheets-cnr.herokuapp.com/scheduled');        
 }
 
 
@@ -70,7 +70,7 @@ function checkNotificationPromise() {
         
     })
     notification.onclick = (e) => {
-        window.location.href = 'http://localhost:8080/scheduled'
+        window.location.href = 'https://timesheets-cnr.herokuapp.com/scheduled'
         Notification.close()
     }
 }
@@ -80,7 +80,7 @@ if (Notification.permission !== 'denied') {
 }
 
 let now = setInterval(checkTime, 1000)
-if (now === '20:11:30') {
+if (now === '14:00:00') {
   if(Notification.permission === "granted") {
       showNotification();
       redirectWindow()            
