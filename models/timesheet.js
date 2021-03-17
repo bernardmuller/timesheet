@@ -6,7 +6,7 @@ const User = require('./user');
 const timesheetSchema = new Schema({
     name: String,
     month: String, 
-    year: String,
+    year: Number,
     submissions: [
         {
             type: Schema.Types.ObjectId,

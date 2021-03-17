@@ -6,6 +6,7 @@ const User = require('./user');
 const submissionSchema = new Schema({
     day: Number, // Needs automation - day
     month: String,
+    year: Number,
     description: {
         type: String,        
     },

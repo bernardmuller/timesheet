@@ -15,24 +15,24 @@ const localPassport = require('passport-local');
 const User = require('./models/user')
 const mongoSanitize = require('express-mongo-sanitize');
 const helmet = require('helmet');
+const MongoStore = require("connect-mongo");
+
 
 //utilities
 const ExpressError = require('./utils/expressError');
-
+const secret = process.env.SECRET || 'developmentsecret'
 
 // Routes //
 const timesheetRoutes = require('./routes/timesheets')
 const submissionRoutes = require('./routes/submissions')
 const userRoutes = require('./routes/users');
-// const { env } = require('process');
+
 
 
 // Database connection //
+const dbUrl = process.env.DBURL || 'mongodb://localhost:27017/timesheetApp';
 
-const dbUrl = process.env.DBURL;
-
-// dbUrl
-mongoose.connect('mongodb://localhost:27017/timesheetApp', {
+mongoose.connect(dbUrl, {
     useNewUrlParser: true,
     useCreateIndex: true,
     useUnifiedTopology: true,
@@ -46,26 +46,23 @@ db.once('open', () => {
 });
 
 
-// App Settings //
-app.engine('ejs', ejsMate);
-app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, '/views'));
-
-app.use(express.static(path.join(__dirname, 'public')));
-app.use('/docs', express.static(path.join(__dirname, 'docs')))
-app.use(express.urlencoded({ extended: true }));
-app.use(methodOverride('_method'));
-app.use(express.static('public'));
-app.use(mongoSanitize());
-app.use(helmet({ contentSecurityPolicy: false }));
-
 // Session & Flash // 
+const mongoStore = MongoStore.create({
+    mongoUrl: dbUrl,
+    collectionName: "sessions",
+});
+
+// store.on("error", function (e) {
+//     console.log("SESSION STORE ERROR", e)
+// })
+
 const sessionConfig = {
-    name: 'tsSession',
-    secret : process.env.SECRET,
-    resave : false,
+    store: mongoStore,
+    name: 'session',
+    secret,    
+    resave: false,
     saveUninitialized: true,
-    cookie : {
+    cookie: {
         httpOnly: true,
         // secure: true,
         expires: Date.now() + 1000 * 60 * 60 * 24 * 31,
@@ -111,6 +108,20 @@ app.use(
         },
     })
 );
+
+
+// App Settings //
+app.engine('ejs', ejsMate);
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, '/views'));
+
+app.use(express.static(path.join(__dirname, '/public')));
+app.use('/docs', express.static(path.join(__dirname, 'docs')))
+app.use(express.urlencoded({ extended: true }));
+app.use(methodOverride('_method'));
+app.use(express.static('public'));
+app.use(mongoSanitize());
+app.use(helmet());
 
 
 // passport - auth //

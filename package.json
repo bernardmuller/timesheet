@@ -7,6 +7,7 @@
     "axios": "^0.21.1",
     "bcrypt": "^5.0.0",
     "connect-flash": "^0.1.1",
+    "connect-mongo": "^3.2.0",
     "dotenv": "^8.2.0",
     "ejs": "^3.1.5",
     "ejs-mate": "^3.0.0",
@@ -30,13 +31,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Grizzlyui/timesheet.git"
+    "url": "git+https://github.com/bernardmuller/timesheet.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Grizzlyui/timesheet/issues"
+    "url": "https://github.com/bernardmuller/timesheet/issues"
   },
-  "homepage": "https://github.com/Grizzlyui/timesheet#readme"
+  "homepage": "https://github.com/bernardmuller/timesheet#readme"
 }

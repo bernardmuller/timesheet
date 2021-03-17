@@ -1,10 +1,13 @@
 const Submission = require('../models/submission');
 const Timesheet = require('../models/timesheet');
 const ExpressError = require('../utils/expressError');
+const months = require('../utils/months')
+
 
 const newDate = new Date();
 const defaultDate = newDate.toISOString().slice(0,10);
-const currentMonth = newDate.toISOString().slice(0,7);
+const currentMonth = newDate.toISOString().slice(5,7);
+const currentYear = newDate.toISOString().slice(0,4);
 
 
 module.exports.createSubmission = async(req, res) => {     
@@ -13,8 +16,18 @@ module.exports.createSubmission = async(req, res) => {
     timesheet.submissions.push(newSubmission)
     newSubmission.timesheet.push(timesheet);
     const selectedDay = req.body.submission.date.slice(8,10);
+    const selectedMonth = months.months[req.body.submission.date.slice(5,7)];
+    const selectedYear = req.body.submission.date.slice(0,4);
+    const monthNum = req.body.submission.date.slice(5,7);
+    if (months.months[monthNum] !== timesheet.month) {
+        throw new ExpressError(`Month value must be "${timesheet.month} ${timesheet.year}" for the selected Timesheet`, 501)
+        // req.flash('error', `Month value must be "${months.months[currentMonth]} ${currentYear}" for the selected Timesheet`);
+        // res.redirect(`/timesheets/${timesheet._id}/submissions/new`)
+    }
     newSubmission.day = selectedDay;
+    newSubmission.month = selectedMonth;
     newSubmission.owner = req.user._id;
+    newSubmission.year = selectedYear;
     await timesheet.save();
     await newSubmission.save();
     req.flash('success', 'Daily submission submitted.');
